@@ -1,3 +1,4 @@
+const path = require('path');
 module.exports = {
     // 基本路径, vue.cli 3.3以前请使用 baseUrl
     publicPath: '/',
@@ -8,7 +9,14 @@ module.exports = {
     // 生产环境 sourceMap
     productionSourceMap: true,
     // webpack 配置
-    configureWebpack: ()=> {},
+    configureWebpack: (config)=> {
+        config.resolve = { // 配置解析别名
+            extensions: ['.js', '.json', 'vue'],
+            alias: {
+                '@': path.resolve(__dirname, './src')
+            }
+        }
+    },
     chainWebpack: ()=>{},
     // css 相关配置
     css: {
