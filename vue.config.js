@@ -6,6 +6,8 @@ module.exports = {
     // outputDir: '',
     // 用于嵌套生成的静态资产 (js, css, img, fonts) 的目录
     // assetsDir: '',
+    // eslint-loader 是否在保存的时候检查
+    lintOnSave: false,
     // 生产环境 sourceMap
     productionSourceMap: true,
     // webpack 配置

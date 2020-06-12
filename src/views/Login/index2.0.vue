@@ -19,7 +19,7 @@
                 <el-form-item prop="code" class="item-form">
                     <el-row :gutter="10">
                         <el-col :span="15"><el-input v-model.number="ruleForm.code"></el-input></el-col>
-                        <el-col :span="9"><el-button type="success" class="block" @click="getSms()">获取验证码</el-button></el-col>
+                        <el-col :span="9"><el-button type="success" class="block">获取验证码</el-button></el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item class="item-form">
@@ -87,11 +87,9 @@
 
 <script>
 import {stripscript} from '@/utils/validate';
-import { GetSms } from '@/api/login.js';
-import {reactive, ref, toRef} from '@vue/composition-api';
 export default {
     name: "login",
-    setup(props, context) {
+    data() {
         var checkAge = (rule, value, callback) => {
         if (!value) {
           return callback(new Error('年龄不能为空'));
@@ -122,88 +120,51 @@ export default {
                 callback();
             }
         };
-
-
-        // 在这里放置 data 数据, 声明周期, 自定义函数
-        const menuTab = reactive( [
-            {txt: "登录"},
-            {txt: "注册"}
-        ])
-
-        const ruleForm = reactive({
-            username: '',
-            password: '',
-            code: ''
-        })
-
-        const rules = reactive({
-            username: [
-                { validator: validateUsername, trigger: 'blur' }
+        return{
+            menuTab: [
+                {txt: "登录"},
+                {txt: "注册"}
             ],
-            password: [
-                { validator: validatePassword, trigger: 'blur' }
-            ],
-            code: [
-                { validator: checkAge, trigger: 'blur' }
-            ]
-        })
-
-        
-        const isActive = ref(0)
-
-        // 数据驱动视图渲染
-        const toggleMenu = (index => {
-            isActive.value = index
-        })
-
-        const getSms = (() => {
-            GetSms();
-        })
-
-        // 提交表单
-        const submitForm = (formName => {
-            instance.request({
-                method: 'post',
-                url: '/user/12345',
-                data: {
-                    firstName: 'SLJ',
-                    lastName: 'WK'
-                }
-            })
-                .then(function(response){
-                    console.log(response);
-                })
-                .catch(function(err){
-                    console.log(err);
-                });
-            context.refs[formName].validate((valid) => {
-                if (valid) {
-                    alert('submit!');
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            });
-        })
-
-        return {
-            menuTab, 
-            ruleForm,
-            rules,
-            isActive, 
-            toggleMenu, 
-            submitForm,
-            getSms
+            isActive: 0,
+            ruleForm: {
+                username: '',
+                password: '',
+                code: ''
+            },
+            rules: {
+                username: [
+                    { validator: validateUsername, trigger: 'blur' }
+                ],
+                password: [
+                    { validator: validatePassword, trigger: 'blur' }
+                ],
+                code: [
+                    { validator: checkAge, trigger: 'blur' }
+                ]
+            }
         }
-        
     },
-
     created() {
 
     },
-    // 挂载完成后自动执行的
     mounted() {
-        
+
+    },
+    methods: {
+        // 数据驱动视图渲染
+        toggleMenu(index){
+            this.isActive = index
+        },
+        submitForm(formName) {
+            this.$refs[formName].validate((valid) => {
+            if (valid) {
+                alert('submit!');
+            } else {
+                console.log('error submit!!');
+                return false;
+            }
+            });
+        }
     }
 }
 </script>
