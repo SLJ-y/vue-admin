@@ -157,7 +157,13 @@ export default {
         })
 
         const getSms = (() => {
-            GetSms();
+            
+            let data = {
+                username: ruleForm.username,
+                module: 'register'
+            }
+            console.log(ruleForm.username)
+            GetSms(data);
         })
 
         // 提交表单

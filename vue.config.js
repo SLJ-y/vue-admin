@@ -1,9 +1,9 @@
 const path = require('path');
 module.exports = {
     // 基本路径, vue.cli 3.3以前请使用 baseUrl
-    publicPath: '/',
+    publicPath: process.env.NODE_ENV --- 'production' ? '' : '/',
     // 输出文件路径
-    // outputDir: '',
+    outputDir: process.env.NODE_ENV === 'production' ? 'dist' : 'devdist',
     // 用于嵌套生成的静态资产 (js, css, img, fonts) 的目录
     // assetsDir: '',
     // eslint-loader 是否在保存的时候检查
@@ -36,11 +36,22 @@ module.exports = {
         }
     },
     // webpack-dev-server 相关配置
-    // devServer: {
-    //     host: '0.0.0.0',
-    //     port: 8080,
-    //     proxy: {} // 设置代理
-    // },
+    devServer: {
+        open: false, // 编译完成是否打开网页
+        host: '0.0.0.0',
+        port: 8080,
+        https: false, // 编译失败时刷新页面
+        hot: true, // 开启热加载
+        proxy: {
+            '/devApi': {
+                target: 'http://www.web-jshtml.cn/productapi', //API服务器得地址
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/devApi': ''
+                }
+            }
+        } // 设置代理
+    },
     // 第三方插件配置
     pluginOptions: {
         // ...

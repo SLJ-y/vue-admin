@@ -2,13 +2,11 @@ import instance from '@/utils/request.js';
 /**
  * 获取验证码的接口
  */
-export function GetSms(){
+export function GetSms(data){
     instance.request({
-        method: "get",
+        method: "post",
         url: "/getSms/",
-        data: {
-    
-        }
+        data: data
     })
 } 
 
